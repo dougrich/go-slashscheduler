@@ -1,3 +1,3 @@
-# template-go-pkg
+# go-slashscheduler
 
-This is a template for quickly scaffolding a new golang package
+go-slashscheduler is a go package

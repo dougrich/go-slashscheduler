@@ -1,3 +1,0 @@
-# {{ .Env.NAME }}
-
-{{ .Env.NAME }} is a go package
