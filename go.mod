@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/bwmarrin/discordgo v0.24.0 // indirect
 	github.com/davecgh/go-spew v1.1.0 // indirect
-	github.com/dougrich/go-discordbot v0.0.0-20220410165315-0b34858c3780 // indirect
+	github.com/dougrich/go-discordbot v0.0.0-20220410213510-71a8207c7f0f // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.0 // indirect
 	github.com/hashicorp/go-memdb v1.3.2 // indirect

@@ -8,6 +8,8 @@ github.com/dougrich/go-discordbot v0.0.0-20220410164356-ee7ea1b9873b h1:Dmg6VWtZ
 github.com/dougrich/go-discordbot v0.0.0-20220410164356-ee7ea1b9873b/go.mod h1:ustavEsK70wo6uDrpOoaXEtZVqGlneeo3N3r+GPxzq4=
 github.com/dougrich/go-discordbot v0.0.0-20220410165315-0b34858c3780 h1:nQrVgeaiPR69iqyfJDy9LVSiXr1BozqqQk9UGrYP3Ls=
 github.com/dougrich/go-discordbot v0.0.0-20220410165315-0b34858c3780/go.mod h1:ustavEsK70wo6uDrpOoaXEtZVqGlneeo3N3r+GPxzq4=
+github.com/dougrich/go-discordbot v0.0.0-20220410213510-71a8207c7f0f h1:8/u8DWsAZr/ceG0gzLjrC95W/h5Iyj1KY8OOLsegJ5g=
+github.com/dougrich/go-discordbot v0.0.0-20220410213510-71a8207c7f0f/go.mod h1:ustavEsK70wo6uDrpOoaXEtZVqGlneeo3N3r+GPxzq4=
 github.com/gorilla/websocket v1.4.2 h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0Ufc=
 github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/hashicorp/go-immutable-radix v1.3.0 h1:8exGP7ego3OmkfksihtSouGMZ+hQrhxx+FVELeXpVPE=

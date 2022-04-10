@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/dougrich/go-discordbot"
 )
 
 var (
@@ -15,7 +16,8 @@ var (
 			return fmt.Sprintf("<t:%d:T>", timestamp)
 		},
 	}
-	templateMessage = scheduleTemplate("templateMessage", "{{if .Enabled }}schedule is **enabled**, next game is at {{mention_time .Timestamp}}{{else}}schedule is **disabled**{{end}}")
+	templateMessage = scheduleTemplate("templateMessage", "{{if .Enabled }}schedule is **enabled**, next game is at {{mention_time .Timestamp}}{{else}}schedule is **disabled**, requires both a time and a channel id{{end}}")
+	templateTagline = scheduleTemplate("templateTagline", "Hey @everyone, reminder that we have an upcoming at {{mention_time .Timestamp}}, see you then!")
 )
 
 func scheduleTemplate(name string, t string) *template.Template {
@@ -46,8 +48,12 @@ func (s schedule) Message() string {
 	return s.mustExecute(templateMessage)
 }
 
+func (s schedule) Tagline() string {
+	return s.mustExecute(templateTagline)
+}
+
 func (s schedule) Enabled() bool {
-	return s.Timestamp >= time.Now().Unix()
+	return s.Timestamp >= time.Now().Unix() && s.ChannelID != ""
 }
 
 func (s schedule) Embed() *discordgo.MessageEmbed {
@@ -77,4 +83,14 @@ func (s schedule) Embed() *discordgo.MessageEmbed {
 	}
 
 	return &e
+}
+
+func (s schedule) Notify(bot *discordbot.Bot) {
+	bot.Message(
+		s.ChannelID,
+		discordbot.WithMessage(s.Tagline()),
+		discordbot.WithEmbed(s.Embed()),
+		discordbot.WithReaction("👍"),
+		discordbot.WithReaction("❌"),
+	)
 }

@@ -2,6 +2,8 @@ package slashscheduler
 
 import (
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/hashicorp/go-memdb"
 )
@@ -20,6 +22,10 @@ var (
 					Name:    "id",
 					Unique:  true,
 					Indexer: &memdb.StringFieldIndex{Field: "GuildID"},
+				},
+				"timestamp": &memdb.IndexSchema{
+					Name:    "timestamp",
+					Indexer: &memdb.IntFieldIndex{Field: "Timestamp"},
 				},
 			},
 		},
@@ -56,4 +62,25 @@ func (db slashSchedulerTxn) replace(s *schedule, s2 schedule) error {
 		return err
 	}
 	return nil
+}
+
+func (db slashSchedulerTxn) pending(from time.Time, until time.Time) (chan *schedule, error) {
+	it, err := db.LowerBound(tablenameSchedule, "timestamp", from.Unix())
+	if err != nil {
+		return nil, err
+	}
+	c := make(chan *schedule)
+	go func() {
+		log.Print("slashscheduler:db: starting pending loop")
+		for obj := it.Next(); obj != nil; obj = it.Next() {
+			s := obj.(*schedule)
+			if s.Timestamp > until.Unix() {
+				break
+			}
+			c <- s
+		}
+		log.Print("slashscheduler:db: finished pending loop")
+		close(c)
+	}()
+	return c, nil
 }
