@@ -24,7 +24,7 @@ func scheduleTemplate(name string, t string) *template.Template {
 	return template.Must(template.New(name).Funcs(discordTemplates).Parse(t))
 }
 
-type schedule struct {
+type Schedule struct {
 	GuildID     string
 	Title       string
 	Link        string
@@ -35,7 +35,7 @@ type schedule struct {
 	ChannelID   string
 }
 
-func (s schedule) mustExecute(t *template.Template) string {
+func (s Schedule) mustExecute(t *template.Template) string {
 	var sb strings.Builder
 	err := t.Execute(&sb, s)
 	if err != nil {
@@ -44,19 +44,19 @@ func (s schedule) mustExecute(t *template.Template) string {
 	return sb.String()
 }
 
-func (s schedule) Message() string {
+func (s Schedule) Message() string {
 	return s.mustExecute(templateMessage)
 }
 
-func (s schedule) Tagline() string {
+func (s Schedule) Tagline() string {
 	return s.mustExecute(templateTagline)
 }
 
-func (s schedule) Enabled() bool {
+func (s Schedule) Enabled() bool {
 	return s.Timestamp >= time.Now().Unix() && s.ChannelID != ""
 }
 
-func (s schedule) Embed() *discordgo.MessageEmbed {
+func (s Schedule) Embed() *discordgo.MessageEmbed {
 	e := discordgo.MessageEmbed{
 		Title:       s.Title,
 		Description: s.Description,
@@ -85,7 +85,7 @@ func (s schedule) Embed() *discordgo.MessageEmbed {
 	return &e
 }
 
-func (s schedule) Notify(bot *discordbot.Bot) {
+func (s Schedule) Notify(bot *discordbot.Bot) {
 	bot.Message(
 		s.ChannelID,
 		discordbot.WithMessage(s.Tagline()),

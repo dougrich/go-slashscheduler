@@ -180,10 +180,10 @@ func (scheduler SlashScheduler) Register(bot *discordbot.Bot) error {
 		},
 		"schedule commands",
 		func(ctx context.Context, args *discordbot.Arguments) error {
-			var update func(*schedule) (string, error)
+			var update func(*Schedule) (string, error)
 			switch args.Subcommand() {
 			case "title":
-				update = func(s *schedule) (msg string, err error) {
+				update = func(s *Schedule) (msg string, err error) {
 					newtitle := ""
 					if err = args.Scan(&newtitle); err == nil && newtitle != "" {
 						s.Title = newtitle
@@ -196,7 +196,7 @@ func (scheduler SlashScheduler) Register(bot *discordbot.Bot) error {
 					return
 				}
 			case "description":
-				update = func(s *schedule) (msg string, err error) {
+				update = func(s *Schedule) (msg string, err error) {
 					newdescription := ""
 					if err = args.Scan(&newdescription); err == nil && newdescription != "" {
 						s.Description = newdescription
@@ -209,7 +209,7 @@ func (scheduler SlashScheduler) Register(bot *discordbot.Bot) error {
 					return
 				}
 			case "link":
-				update = func(s *schedule) (msg string, err error) {
+				update = func(s *Schedule) (msg string, err error) {
 					newlink := ""
 					if err = args.Scan(&newlink); err == nil && newlink != "" {
 						s.Link = newlink
@@ -222,7 +222,7 @@ func (scheduler SlashScheduler) Register(bot *discordbot.Bot) error {
 					return
 				}
 			case "timestamp":
-				update = func(s *schedule) (msg string, err error) {
+				update = func(s *Schedule) (msg string, err error) {
 					newtimestamp := int64(0)
 					if err = args.Scan(&newtimestamp); err == nil && newtimestamp > 0 {
 						s.Timestamp = newtimestamp
@@ -235,7 +235,7 @@ func (scheduler SlashScheduler) Register(bot *discordbot.Bot) error {
 					return
 				}
 			case "channel":
-				update = func(s *schedule) (msg string, err error) {
+				update = func(s *Schedule) (msg string, err error) {
 					newchannel := ""
 					if err = args.Scan(&newchannel); err == nil && newchannel != "" {
 						s.ChannelID = newchannel
@@ -248,7 +248,7 @@ func (scheduler SlashScheduler) Register(bot *discordbot.Bot) error {
 					return
 				}
 			case "recurring":
-				update = func(s *schedule) (msg string, err error) {
+				update = func(s *Schedule) (msg string, err error) {
 					newrecurring := int64(0)
 					if err = args.Scan(&newrecurring); err == nil && newrecurring != int64(0) {
 						s.Recurring = newrecurring == int64(1)
@@ -265,7 +265,7 @@ func (scheduler SlashScheduler) Register(bot *discordbot.Bot) error {
 					return
 				}
 			case "color":
-				update = func(s *schedule) (msg string, err error) {
+				update = func(s *Schedule) (msg string, err error) {
 					newcolor := int64(-1)
 					if err = args.Scan(&newcolor); err == nil && newcolor != -1 {
 						msg = fmt.Sprintf("Embed color updated to 0x%X", newcolor)

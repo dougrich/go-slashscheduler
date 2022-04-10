@@ -9,14 +9,14 @@ import (
 )
 
 const (
-	tablenameSchedule = "schedule"
+	TablenameSchedule = "schedule"
 )
 
 var (
 	ErrGuildIDEmpty = fmt.Errorf("")
 	MemDBSchema     = map[string]*memdb.TableSchema{
 		"schedule": &memdb.TableSchema{
-			Name: tablenameSchedule,
+			Name: TablenameSchedule,
 			Indexes: map[string]*memdb.IndexSchema{
 				"id": &memdb.IndexSchema{
 					Name:    "id",
@@ -36,44 +36,44 @@ type slashSchedulerTxn struct {
 	*memdb.Txn
 }
 
-func (db slashSchedulerTxn) get(guildID string) (*schedule, error) {
-	s, err := db.First(tablenameSchedule, "id", guildID)
+func (db slashSchedulerTxn) get(guildID string) (*Schedule, error) {
+	s, err := db.First(TablenameSchedule, "id", guildID)
 	if err != nil && err != memdb.ErrNotFound {
 		return nil, err
 	} else if s == nil {
-		return &schedule{
+		return &Schedule{
 			GuildID: guildID,
 		}, nil
 	} else {
-		return s.(*schedule), nil
+		return s.(*Schedule), nil
 	}
 }
 
-func (db slashSchedulerTxn) replace(s *schedule, s2 schedule) error {
+func (db slashSchedulerTxn) replace(s *Schedule, s2 Schedule) error {
 	if s.GuildID == "" {
 		return ErrGuildIDEmpty
 	}
-	err := db.Delete(tablenameSchedule, s)
+	err := db.Delete(TablenameSchedule, s)
 	if err != nil && err != memdb.ErrNotFound {
 		return err
 	}
-	err = db.Insert(tablenameSchedule, &s2)
+	err = db.Insert(TablenameSchedule, &s2)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (db slashSchedulerTxn) pending(from time.Time, until time.Time) (chan *schedule, error) {
-	it, err := db.LowerBound(tablenameSchedule, "timestamp", from.Unix())
+func (db slashSchedulerTxn) pending(from time.Time, until time.Time) (chan *Schedule, error) {
+	it, err := db.LowerBound(TablenameSchedule, "timestamp", from.Unix())
 	if err != nil {
 		return nil, err
 	}
-	c := make(chan *schedule)
+	c := make(chan *Schedule)
 	go func() {
 		log.Print("slashscheduler:db: starting pending loop")
 		for obj := it.Next(); obj != nil; obj = it.Next() {
-			s := obj.(*schedule)
+			s := obj.(*Schedule)
 			if s.Timestamp > until.Unix() {
 				break
 			}

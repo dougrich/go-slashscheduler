@@ -23,7 +23,7 @@ func TestDB(t *testing.T) {
 	s, err := txn.get("5")
 	assert.NoError(err)
 	assert.Equal("5", s.GuildID)
-	err = txn.replace(s, schedule{
+	err = txn.replace(s, Schedule{
 		GuildID:     s.GuildID,
 		Title:       "4321",
 		Description: "1234",
