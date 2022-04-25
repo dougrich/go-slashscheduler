@@ -57,11 +57,7 @@ func (db slashSchedulerTxn) replace(s *Schedule, s2 Schedule) error {
 	if err != nil && err != memdb.ErrNotFound {
 		return err
 	}
-	err = db.Insert(TablenameSchedule, &s2)
-	if err != nil {
-		return err
-	}
-	return nil
+	return db.Insert(TablenameSchedule, &s2)
 }
 
 func (db slashSchedulerTxn) pending(from time.Time, until time.Time) (chan *Schedule, error) {
